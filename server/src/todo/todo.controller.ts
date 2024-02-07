@@ -1,4 +1,4 @@
-import { Body, Controller, Get,Post,Put, Delete} from '@nestjs/common';
+import { Body, Controller, Get,Post,Put, Delete, BadRequestException} from '@nestjs/common';
 import { ToDoService } from './todo.service';
 import {Todo} from './dto/todo.dto'
 import {DueDateValidationPipe} from './pipe/dueDatePipe'
@@ -46,19 +46,25 @@ export class TodoController {
     @Query('status',new statusValidationPipe())status: string,
     @Query()id:number
   ){
+    try{
     const LateStatus=await this.todoService.UpdateTodo(id,status);
     if(LateStatus.Error)
-        return {errorMessage:LateStatus.Message};
+        throw new BadRequestException('errorMessage: '+LateStatus.Message);
     else
         return{result:LateStatus.Message};
+    }
+    catch(BadRequestException){};
   }
   
   @Delete()
   async DeleteTodo(@Query('id')id:number){
     const res=await this.todoService.DeleteTodo(id);
+    try{
     if(res.Error)
-        return {errorMessage:res.Message};
+        throw new BadRequestException('errorMessage: '+res.Message);
     else
         return{result:res.Message};
+    }
+    catch(BadRequestException){}
   }
 }

@@ -5,6 +5,7 @@ import { PipeTransform,BadRequestException, Injectable, ArgumentMetadata } from 
 export class SortByValidationPipe implements PipeTransform {
   
   transform(sortBy: string, metadata: ArgumentMetadata) {
+    try{
     const validSortByValues = ['ID', 'DUE_DATE', 'TITLE'];
     if (!validSortByValues.includes(sortBy)) {
       throw new BadRequestException(`Invalid sortBy: ${sortBy}. Valid values are ${validSortByValues.join(', ')}`);
@@ -17,5 +18,7 @@ export class SortByValidationPipe implements PipeTransform {
         sortBy='title'
     
     return sortBy;
+  }
+  catch(BadRequestException){};
   }
 }
