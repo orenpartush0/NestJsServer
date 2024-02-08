@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataBaseTodo } from './DataBases/dbEntity/todoPostgres';
 import { ExtendDataBaseTodo } from './DataBases/dbEntity/todoMongo';
 import { Repository } from 'typeorm';
-
+import { validpersistenceMethodsValues } from './enum/enum';}
 
 export class ToDoService {
     constructor(
@@ -18,9 +18,9 @@ export class ToDoService {
     return 'OK';
   }
   private ChooseRepo(persistenceMethod:string){
-    if(persistenceMethod=='MONGO')
+    if(persistenceMethod==validpersistenceMethodsValues[1])
       return this.MongoDbRepo;
-    else if(persistenceMethod=='POSTGRES')
+    else if(persistenceMethod==validpersistenceMethodsValues[0])
       return this.postGressRepo;
   }
 
